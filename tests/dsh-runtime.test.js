@@ -10,26 +10,34 @@ const {
 } = require('../lib/dsh-runtime');
 
 test('resolves the CLI beside the bundled package manifest', () => {
+  const packageRoot = path.join(path.sep, 'app', 'node_modules', '@deepseek-ai', 'dsh');
+  const expectedCli = path.join(packageRoot, 'lib', 'bin.js');
   const result = resolveDshCli({
-    resolvePackage: () => '/app/node_modules/@deepseek-ai/dsh/package.json',
-    existsSync: (file) => file.endsWith('/lib/bin.js'),
+    resolvePackage: () => path.join(packageRoot, 'package.json'),
+    existsSync: (file) => file === expectedCli,
   });
 
-  assert.equal(result, '/app/node_modules/@deepseek-ai/dsh/lib/bin.js');
+  assert.equal(result, expectedCli);
 });
 
 test('uses the physical unpacked CLI path in an ASAR application', () => {
+  const resources = path.join(path.sep, 'app', 'resources');
+  const packageRoot = path.join(resources, 'app.asar', 'node_modules', '@deepseek-ai', 'dsh');
+  const expectedCli = path.join(
+    resources,
+    'app.asar.unpacked',
+    'node_modules',
+    '@deepseek-ai',
+    'dsh',
+    'lib',
+    'bin.js',
+  );
   const result = resolveDshCli({
-    resolvePackage: () => '/app/resources/app.asar/node_modules/@deepseek-ai/dsh/package.json',
-    existsSync: (file) => (
-      file === '/app/resources/app.asar.unpacked/node_modules/@deepseek-ai/dsh/lib/bin.js'
-    ),
+    resolvePackage: () => path.join(packageRoot, 'package.json'),
+    existsSync: (file) => file === expectedCli,
   });
 
-  assert.equal(
-    result,
-    '/app/resources/app.asar.unpacked/node_modules/@deepseek-ai/dsh/lib/bin.js',
-  );
+  assert.equal(result, expectedCli);
 });
 
 test('accepts only an existing explicit DSH_CLI override', () => {
