@@ -32,3 +32,12 @@ test('安装说明具备样式和复制命令交互', () => {
   assert.match(js, /copyDefaultMarkup/);
   assert.match(tabletStyles, /\.nav-links \{ display: none; \}/);
 });
+
+test('下载页说明已内置运行组件并发布 0.3.0', () => {
+  assert.match(html, /已内置所需运行组件/);
+  assert.match(html, /无需 Node\.js、npm、npx 或终端准备/);
+  assert.doesNotMatch(html, /需要本机已有 dsh CLI|npx 在线启动/);
+  assert.match(html, /id="versionBadge">v0\.3\.0/);
+  assert.match(js, /version: '0\.3\.0'/);
+  assert.doesNotMatch(js, /检测到本机 dsh CLI/);
+});

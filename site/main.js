@@ -7,16 +7,16 @@
    安装包命名与 scripts/build.sh / package.json 的 artifactName 保持一致。 */
 const CONFIG = {
   repo: 'CSlawyer1985/dsh-desktop',                 // TODO: 你的仓库
-  version: '0.2.0',
+  version: '0.3.0',
   releasesBase: 'https://github.com/CSlawyer1985/dsh-desktop/releases', // TODO
   files: {
-    'mac-arm64.dmg': 'DeepSeek-Harness-0.2.0-mac-arm64.dmg',
-    'mac-x64.dmg': 'DeepSeek-Harness-0.2.0-mac-x64.dmg',
-    'mac-arm64.zip': 'DeepSeek-Harness-0.2.0-mac-arm64.zip',
-    'Setup-x64.exe': 'DeepSeek-Harness-Setup-0.2.0-x64.exe',
-    'Portable-x64.exe': 'DeepSeek-Harness-Portable-0.2.0-x64.exe',
-    'Setup-arm64.exe': 'DeepSeek-Harness-Setup-0.2.0-arm64.exe',
-    'linux.AppImage': 'DeepSeek-Harness-0.2.0-linux-x86_64.AppImage',
+    'mac-arm64.dmg': 'DeepSeek-Harness-0.3.0-mac-arm64.dmg',
+    'mac-x64.dmg': 'DeepSeek-Harness-0.3.0-mac-x64.dmg',
+    'mac-arm64.zip': 'DeepSeek-Harness-0.3.0-mac-arm64.zip',
+    'Setup-x64.exe': 'DeepSeek-Harness-Setup-0.3.0-x64.exe',
+    'Portable-x64.exe': 'DeepSeek-Harness-Portable-0.3.0-x64.exe',
+    'Setup-arm64.exe': 'DeepSeek-Harness-Setup-0.3.0-arm64.exe',
+    'linux.AppImage': 'DeepSeek-Harness-0.3.0-linux-x86_64.AppImage',
   },
 };
 const downloadBase = `${CONFIG.releasesBase}/download/v${CONFIG.version}`;
@@ -74,9 +74,9 @@ document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el))
 /* ---------- Hero 窗口：启动日志打字动画 ---------- */
 // 每行由带颜色的片段组成，按字符逐个打出，保持 span 着色
 const bootLines = [
-  [{ t: '$', c: 'dim' }, { t: ' dsh web ' }, { t: '--port 3080', c: 'dim' }],
+  [{ t: '$', c: 'dim' }, { t: ' 启动内置 dsh web ' }, { t: '--port 3080', c: 'dim' }],
   [{ t: '› profile ', c: 'dim' }, { t: 'web', c: 'ok' }, { t: ' 已加载 · 插件 bundle 就绪', c: 'dim' }],
-  [{ t: '› 检测到本机 dsh CLI（npx 缓存）', c: 'dim' }],
+  [{ t: '› 已加载内置 DSH 运行组件', c: 'dim' }],
   [{ t: '✓ 服务已就绪 → ', c: 'ok' }, { t: 'http://127.0.0.1:3080', c: 'url' }],
   [{ t: '✓ UI 已在独立窗口打开', c: 'ok' }],
 ];
@@ -172,7 +172,7 @@ if (copyBtn) {
     const text = [
       'git clone https://github.com/CSlawyer1985/dsh-desktop',
       'cd dsh-desktop && npm ci',
-      'bash scripts/build.sh mac   # win / linux / all',
+      'bash scripts/build.sh mac   # win / linux',
     ].join('\n');
     await copyText(text);
     showCopiedState(copyBtn);
