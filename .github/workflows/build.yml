@@ -51,6 +51,7 @@ jobs:
       # Windows：Authenticode 签名（未配置密钥时自动降级）
       - name: Build windows installer (nsis + portable)
         if: runner.os == 'Windows'
+        shell: bash
         run: |
           if [ -n "$CSC_LINK" ]; then
             npx electron-builder --win --x64 --arm64
