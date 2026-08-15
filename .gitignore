@@ -9,8 +9,7 @@ dist/
 .electron-cache/
 .electron-builder-cache/
 
-# 图标生成产物（源文件 build/deepseek-logo.svg 保留，其余为生成物）
-build/icon.png
+# 图标生成产物（icon.png 已提交供 CI 使用；deepseek-logo.svg 为源文件）
 build/icon.icns
 build/icon-render.html
 build/.render-profile/

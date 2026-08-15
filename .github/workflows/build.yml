@@ -25,22 +25,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate icon (official DeepSeek logo on black)
-        run: node scripts/make-icon-render.js && ELECTRON_DISABLE_SANDBOX=1 npx electron scripts/render-icon.js
-        env:
-          GH_TOKEN: ${{ github.token }}
-
-      # macOS：图标 icns + 签名/公证（未配置密钥时自动降级为不签名构建）
-      - name: Build mac icon (icns)
+      - name: Build mac icon (icns from committed png)
         if: runner.os == 'macOS'
         run: bash scripts/make-icns.sh
 
+      # macOS：图标 icns + 签名/公证（未配置密钥时自动降级为不签名构建）
       - name: Build mac installer (dmg + zip)
         if: runner.os == 'macOS'
         run: |
           if [ -n "$CSC_LINK" ]; then
             npx electron-builder --mac --x64 --arm64 -c.mac.notarize=true
           else
+            unset CSC_LINK CSC_KEY_PASSWORD APPLE_ID APPLE_APP_SPECIFIC_PASSWORD APPLE_TEAM_ID
             npx electron-builder --mac --x64 --arm64
           fi
         env:
@@ -59,6 +55,7 @@ jobs:
           if [ -n "$CSC_LINK" ]; then
             npx electron-builder --win --x64 --arm64
           else
+            unset CSC_LINK CSC_KEY_PASSWORD
             npx electron-builder --win --x64 --arm64
           fi
         env:
