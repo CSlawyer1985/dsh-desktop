@@ -70,10 +70,10 @@ jobs:
         if: matrix.platform == 'darwin'
         run: |
           if [ -n "$CSC_LINK" ]; then
-            npx electron-builder --mac --${{ matrix.arch }} -c.mac.notarize=true
+            npx electron-builder --mac --${{ matrix.arch }} -c.mac.notarize=true --publish never
           else
             unset CSC_LINK CSC_KEY_PASSWORD APPLE_ID APPLE_APP_SPECIFIC_PASSWORD APPLE_TEAM_ID
-            npx electron-builder --mac --${{ matrix.arch }}
+            npx electron-builder --mac --${{ matrix.arch }} --publish never
           fi
         env:
           GH_TOKEN: ${{ github.token }}
@@ -90,10 +90,10 @@ jobs:
         shell: bash
         run: |
           if [ -n "$CSC_LINK" ]; then
-            npx electron-builder --win --${{ matrix.arch }}
+            npx electron-builder --win --${{ matrix.arch }} --publish never
           else
             unset CSC_LINK CSC_KEY_PASSWORD
-            npx electron-builder --win --${{ matrix.arch }}
+            npx electron-builder --win --${{ matrix.arch }} --publish never
           fi
         env:
           GH_TOKEN: ${{ github.token }}
@@ -102,7 +102,7 @@ jobs:
 
       - name: Build linux installer (AppImage)
         if: matrix.platform == 'linux'
-        run: npx electron-builder --linux --${{ matrix.arch }}
+        run: npx electron-builder --linux --${{ matrix.arch }} --publish never
         env:
           GH_TOKEN: ${{ github.token }}
 
