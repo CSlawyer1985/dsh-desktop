@@ -223,6 +223,39 @@
                 </a>
               </div>
             </div>
+
+            <details class="install-help">
+              <summary>
+                <span class="install-help-heading">
+                  <svg class="install-help-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+                  <span>
+                    <strong>下载后打不开？</strong>
+                    <small>查看 macOS 首次运行方法</small>
+                  </span>
+                </span>
+                <svg class="install-help-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="install-help-body">
+                <p class="install-help-lead">当前 macOS 安装包尚未取得 Apple Developer 签名。Gatekeeper 可能将它显示为“已损坏”，这类提示通常是系统无法验证发布者，并不等同于文件在下载时损坏。</p>
+                <ol class="install-steps">
+                  <li><span>1</span><p>打开下载的 DMG，将 <strong>DeepSeek Harness</strong> 拖入“应用程序”。</p></li>
+                  <li><span>2</span><p>尝试打开一次。如果系统拦截，进入“系统设置 → 隐私与安全性”，向下找到相关提示并点击“仍要打开”。</p></li>
+                  <li><span>3</span><p>如果仍显示“已损坏”，打开“终端”，复制并执行下面这条命令：</p></li>
+                </ol>
+                <div class="install-command">
+                  <code id="macQuarantineCommand">xattr -dr com.apple.quarantine &quot;/Applications/DeepSeek Harness.app&quot;</code>
+                  <button class="install-copy" type="button" data-copy-target="macQuarantineCommand" aria-label="复制 macOS 打开命令">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>复制命令</span>
+                  </button>
+                </div>
+                <p class="install-help-finish">执行后，再从“应用程序”中打开 DeepSeek Harness。</p>
+                <p class="install-safety">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                  这条命令只移除 DeepSeek Harness 的下载隔离标记，不会关闭 Mac 的整体安全保护。请仅使用本站或项目 GitHub Releases 提供的安装包。
+                </p>
+              </div>
+            </details>
           </div>
 
           <!-- Windows -->
@@ -262,6 +295,31 @@
                 </a>
               </div>
             </div>
+
+            <details class="install-help">
+              <summary>
+                <span class="install-help-heading">
+                  <svg class="install-help-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+                  <span>
+                    <strong>下载后打不开？</strong>
+                    <small>查看 Windows 首次运行方法</small>
+                  </span>
+                </span>
+                <svg class="install-help-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="install-help-body">
+                <p class="install-help-lead">当前 Windows 安装包尚未取得代码签名，因此 SmartScreen 可能显示“Windows 已保护你的电脑”。请按下面的步骤完成首次运行。</p>
+                <ol class="install-steps">
+                  <li><span>1</span><p>双击下载的安装器或便携版。如果出现蓝色安全提示，点击提示中的“更多信息”。</p></li>
+                  <li><span>2</span><p>确认应用名称为 <strong>DeepSeek Harness</strong>，并确认文件来自本站或项目 GitHub Releases。</p></li>
+                  <li><span>3</span><p>点击“仍要运行”，随后按正常安装步骤继续。这个确认通常只在首次运行时出现。</p></li>
+                </ol>
+                <p class="install-safety">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                  不需要关闭 Windows Defender 或 SmartScreen，只需对本次下载的 DeepSeek Harness 单独确认运行。
+                </p>
+              </div>
+            </details>
           </div>
 
           <!-- Linux -->
@@ -289,13 +347,37 @@
                 </a>
               </div>
             </div>
+
+            <details class="install-help">
+              <summary>
+                <span class="install-help-heading">
+                  <svg class="install-help-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+                  <span>
+                    <strong>下载后打不开？</strong>
+                    <small>查看 Linux 首次运行方法</small>
+                  </span>
+                </span>
+                <svg class="install-help-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="install-help-body">
+                <p class="install-help-lead">AppImage 下载后需要先取得执行权限。这是 Linux 对下载文件的常规保护，并不需要安装到系统目录。</p>
+                <ol class="install-steps">
+                  <li><span>1</span><p>打开终端，进入 AppImage 所在目录。</p></li>
+                  <li><span>2</span><p>依次执行下面两条命令，赋予执行权限并启动应用：</p></li>
+                </ol>
+                <div class="install-command install-command-static">
+                  <code>chmod +x DeepSeek-Harness-*.AppImage
+./DeepSeek-Harness-*.AppImage</code>
+                </div>
+                <p class="install-safety">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                  只为从本站或项目 GitHub Releases 下载的 AppImage 增加执行权限。
+                </p>
+              </div>
+            </details>
           </div>
 
           <div class="download-notes">
-            <p>
-              · 安装包目前<strong style="color:#c7d0de">未做代码签名</strong>：macOS 首次打开请右键 →「打开」；Windows 请点「更多信息」→「仍要运行」。签名方案见
-              <a href="https://github.com/CSlawyer1985/dsh-desktop/blob/main/docs/SIGNING.md" target="_blank" rel="noopener">代码签名指南</a>。
-            </p>
             <p>
               · 桌面端需要本机已有 dsh CLI（终端跑过一次 <span class="mono">npx @deepseek-ai/dsh web</span> 即可自动发现），或选择 npx 在线启动。
               · 全部历史版本见 <a href="https://github.com/CSlawyer1985/dsh-desktop/releases" target="_blank" rel="noopener">GitHub Releases</a>。
@@ -366,7 +448,6 @@
             <li><a href="https://github.com/CSlawyer1985/dsh-desktop" target="_blank" rel="noopener">GitHub 仓库<span class="ext">↗</span></a></li>
             <li><a href="https://github.com/CSlawyer1985/dsh-desktop/releases" target="_blank" rel="noopener">Releases 下载<span class="ext">↗</span></a></li>
             <li><a href="https://github.com/CSlawyer1985/dsh-desktop/blob/main/README.md" target="_blank" rel="noopener">README 文档<span class="ext">↗</span></a></li>
-            <li><a href="https://github.com/CSlawyer1985/dsh-desktop/blob/main/docs/SIGNING.md" target="_blank" rel="noopener">代码签名指南<span class="ext">↗</span></a></li>
             <li><a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noopener">DeepSeek Harness（上游）<span class="ext">↗</span></a></li>
           </ul>
         </div>
