@@ -26,16 +26,20 @@ jobs:
         run: npm ci
 
       - name: Generate icon (official DeepSeek logo on black)
-        run: node scripts/make-icon-render.js && npx electron scripts/render-icon.js
+        run: node scripts/make-icon-render.js && ELECTRON_DISABLE_SANDBOX=1 npx electron scripts/render-icon.js
+        env:
+          GH_TOKEN: ${{ github.token }}
 
-      # --- macOS：签名 + 公证 ---
-      # 需要仓库 Secrets：MAC_CSC_LINK（p12 的 base64）、MAC_CSC_KEY_PASSWORD、
-      # APPLE_ID（Apple 账号邮箱）、APPLE_APP_SPECIFIC_PASSWORD（App 专用密码）、APPLE_TEAM_ID
-      # 未配置 Secret 时自动降级为不签名构建（可正常打包，仅首次打开有 Gatekeeper 提示）
-      - name: Build mac installer (dmg + zip, signed & notarized)
+      # macOS：图标 icns + 签名/公证（未配置密钥时自动降级为不签名构建）
+      - name: Build mac icon (icns)
         if: runner.os == 'macOS'
+        run: bash scripts/make-icns.sh
+
+      - name: Build mac installer (signed & notarized)
+        if: runner.os == 'macOS' && secrets.MAC_CSC_LINK != ''
         run: npx electron-builder --mac --x64 --arm64 -c.mac.notarize=true
         env:
+          GH_TOKEN: ${{ github.token }}
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
           CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
@@ -43,19 +47,33 @@ jobs:
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
-      # --- Windows：Authenticode 签名 ---
-      # 需要仓库 Secrets：WIN_CSC_LINK（pfx 的 base64）、WIN_CSC_KEY_PASSWORD
-      # 可选：Azure Trusted Signing（见 docs/SIGNING.md）
-      - name: Build windows installer (nsis + portable, signed)
-        if: runner.os == 'Windows'
+      - name: Build mac installer (unsigned)
+        if: runner.os == 'macOS' && secrets.MAC_CSC_LINK == ''
+        run: npx electron-builder --mac --x64 --arm64
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+      # Windows：Authenticode 签名（未配置密钥时自动降级）
+      - name: Build windows installer (signed)
+        if: runner.os == 'Windows' && secrets.WIN_CSC_LINK != ''
         run: npx electron-builder --win --x64 --arm64
         env:
+          GH_TOKEN: ${{ github.token }}
           CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+
+      - name: Build windows installer (unsigned)
+        if: runner.os == 'Windows' && secrets.WIN_CSC_LINK == ''
+        run: npx electron-builder --win --x64 --arm64
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Build linux installer (AppImage)
         if: runner.os == 'Linux'
         run: npx electron-builder --linux
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
