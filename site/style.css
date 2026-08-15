@@ -556,6 +556,7 @@ img { max-width: 100%; display: block; }
 }
 .install-help summary::-webkit-details-marker { display: none; }
 .install-help summary:hover { background: rgba(255, 255, 255, 0.035); }
+.install-help summary:focus-visible { outline-offset: -3px; border-radius: calc(var(--radius-card) - 2px); }
 .install-help-heading { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .install-help-heading > span { min-width: 0; }
 .install-help-heading strong {
@@ -794,7 +795,7 @@ img { max-width: 100%; display: block; }
     margin-left: 0;
     padding: 13px;
   }
-  .install-command code { font-size: 12.5px; }
+  .install-command code { font-size: 12.5px; white-space: pre-wrap; overflow-wrap: anywhere; }
   .install-copy { width: 100%; min-height: 42px; }
   .install-help-finish { margin-left: 0; }
   .install-safety { font-size: 13.5px; }
