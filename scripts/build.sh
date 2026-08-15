@@ -1,10 +1,12 @@
 #!/bin/bash
 # 一键构建桌面端安装包：生成图标 → electron-builder 产出安装程序
-# 用法: bash scripts/build.sh [mac|win|linux|all]   默认 = 当前平台
+# 用法: bash scripts/build.sh [mac|win|linux]   默认 = 当前平台
+# 官方 CLI 含原生依赖，本地只构建当前系统/芯片；全平台产物由 GitHub Actions 生成。
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 TARGET="${1:-}"
+ARCH="$(node -p 'process.arch')"
 
 echo "==> 生成图标（官方 DeepSeek logo，白色衬黑底）"
 node scripts/make-icon-render.js
@@ -20,11 +22,21 @@ export electron_config_cache="$PWD/.electron-cache"
 export ELECTRON_BUILDER_CACHE="$PWD/.electron-builder-cache"
 
 case "$TARGET" in
-  mac)   npx electron-builder --mac --arm64 --x64 ;;
-  win)   npx electron-builder --win --x64 --arm64 ;;
-  linux) npx electron-builder --linux ;;
-  all)   npx electron-builder -mwl --arm64 --x64 ;;
-  *)     npx electron-builder --mac --arm64 --x64 ;;
+  mac)   npx electron-builder --mac "--$ARCH" ;;
+  win)   npx electron-builder --win "--$ARCH" ;;
+  linux) npx electron-builder --linux "--$ARCH" ;;
+  all)
+    echo "    内置 CLI 含平台原生依赖；请通过 GitHub Actions 构建全平台安装包。"
+    exit 2
+    ;;
+  *)
+    case "$(node -p 'process.platform')" in
+      darwin) npx electron-builder --mac "--$ARCH" ;;
+      win32)  npx electron-builder --win "--$ARCH" ;;
+      linux)  npx electron-builder --linux "--$ARCH" ;;
+      *)      echo "    不支持的构建平台"; exit 2 ;;
+    esac
+    ;;
 esac
 
 echo "==> 完成，产物在 dist/"

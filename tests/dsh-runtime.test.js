@@ -18,6 +18,20 @@ test('resolves the CLI beside the bundled package manifest', () => {
   assert.equal(result, '/app/node_modules/@deepseek-ai/dsh/lib/bin.js');
 });
 
+test('uses the physical unpacked CLI path in an ASAR application', () => {
+  const result = resolveDshCli({
+    resolvePackage: () => '/app/resources/app.asar/node_modules/@deepseek-ai/dsh/package.json',
+    existsSync: (file) => (
+      file === '/app/resources/app.asar.unpacked/node_modules/@deepseek-ai/dsh/lib/bin.js'
+    ),
+  });
+
+  assert.equal(
+    result,
+    '/app/resources/app.asar.unpacked/node_modules/@deepseek-ai/dsh/lib/bin.js',
+  );
+});
+
 test('accepts only an existing explicit DSH_CLI override', () => {
   assert.equal(
     resolveDshCli({ override: '/custom/bin.js', existsSync: () => true }),
