@@ -2,8 +2,7 @@
 //
 // 职责：
 //  1. 启动时检测 127.0.0.1:PORT 上是否已有 dsh web 服务（通过 __DSH_BOOT__ 标记判断）；
-//  2. 没有则自动拉起 dsh CLI（优先复用 npx 缓存里已安装的 @deepseek-ai/dsh，
-//     用 Electron 自身的 Node 运行时执行，即 ELECTRON_RUN_AS_NODE）；
+//  2. 没有则用 Electron 自身的 Node 运行时拉起安装包内置的 dsh CLI；
 //  3. 就绪后在独立窗口加载 UI；退出时若服务是本应用拉起的则一并关闭。
 //
 // 环境变量：
@@ -14,10 +13,10 @@
 const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
 const { spawn } = require('node:child_process');
 const fs = require('node:fs');
-const fsp = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
 const http = require('node:http');
+const { resolveDshCli, spawnDshServer } = require('./lib/dsh-runtime');
 
 const PORT = Number(process.env.DSH_DESKTOP_PORT || 3080);
 const APP_URL = `http://127.0.0.1:${PORT}`;
@@ -74,52 +73,6 @@ function isDshUp() {
   });
 }
 
-// 各平台 dsh CLI 的常见安装位置（npm 全局安装 / npx 缓存）
-function cliCandidateRoots() {
-  const roots = [];
-  const isWin = process.platform === 'win32';
-  if (isWin) {
-    // Windows：npm 全局前缀 %APPDATA%\npm，npx 缓存在 npm cache 的 _npx 下
-    const appData = process.env.APPDATA;
-    const localAppData = process.env.LOCALAPPDATA;
-    if (appData) roots.push(path.join(appData, 'npm', 'node_modules'));
-    if (localAppData) roots.push(path.join(localAppData, 'npm-cache', '_npx'));
-  } else {
-    // macOS / Linux
-    roots.push(path.join(os.homedir(), '.npm-global', 'lib', 'node_modules'));
-    roots.push('/usr/local/lib/node_modules');
-    roots.push('/usr/lib/node_modules');
-    roots.push(path.join(os.homedir(), '.npm', '_npx'));
-  }
-  return roots;
-}
-
-// 查找本机已有的 dsh CLI 入口，按修改时间取最新的
-async function findDshCli() {
-  const found = [];
-  if (process.env.DSH_CLI && fs.existsSync(process.env.DSH_CLI)) found.push(process.env.DSH_CLI);
-  for (const root of cliCandidateRoots()) {
-    try {
-      if (path.basename(root) === '_npx') {
-        // npx 缓存：_npx/<hash>/node_modules/@deepseek-ai/dsh/lib/bin.js
-        for (const d of await fsp.readdir(root)) {
-          const p = path.join(root, d, 'node_modules', '@deepseek-ai', 'dsh', 'lib', 'bin.js');
-          if (fs.existsSync(p)) found.push(p);
-        }
-      } else {
-        const p = path.join(root, '@deepseek-ai', 'dsh', 'lib', 'bin.js');
-        if (fs.existsSync(p)) found.push(p);
-      }
-    } catch {}
-  }
-  if (!found.length) return null;
-  const withTime = await Promise.all(
-    found.map(async (p) => [p, (await fsp.stat(p)).mtimeMs])
-  );
-  withTime.sort((a, b) => b[1] - a[1]);
-  return withTime[0][0];
-}
-
 function killServer() {
   if (!serverProc) return;
   const pid = serverProc.pid;
@@ -145,51 +98,14 @@ function killServer() {
   }, 3000).unref();
 }
 
-// 各平台的"登录 shell 兜底"：用于 npx 在线启动（继承用户 shell 的 PATH）
-function spawnNpxFallback(env) {
-  const npmCmd = `npx -y @deepseek-ai/dsh --profile web --port ${PORT}`;
-  const extraEnv = {
-    ...env,
-    PATH: env.PATH || '/usr/bin:/bin:/usr/sbin:/sbin',
-    NODE_OPTIONS: '--expose-internals', // HMR 插件必需
-  };
-  if (process.platform === 'win32') {
-    appendLog(`spawning via cmd: ${npmCmd}`);
-    return spawn('cmd.exe', ['/d', '/s', '/c', npmCmd], {
-      env: extraEnv,
-      stdio: ['ignore', 'pipe', 'pipe'],
-      windowsHide: true,
-      detached: true,
-    });
-  }
-  // macOS 用 zsh（用户交互 shell，PATH 最完整）；Linux 用 bash
-  const shell = process.platform === 'darwin' ? '/bin/zsh' : '/bin/bash';
-  const flag = shell.endsWith('zsh') ? '-lc' : '-lc';
-  appendLog(`spawning via login shell (${shell}): ${npmCmd}`);
-  return spawn(shell, [flag, `exec ${npmCmd}`], {
-    env: extraEnv,
-    stdio: ['ignore', 'pipe', 'pipe'],
-    detached: true,
-  });
-}
-
 function startServer(cli) {
-  const env = { ...process.env, DSH_HOME };
-  if (cli) {
-    appendLog(`spawning: ELECTRON_RUN_AS_NODE=1 ${process.execPath} --expose-internals ${cli} --profile web --port ${PORT}`);
-    // --expose-internals 是 web profile 的 HMR 插件所必需的
-    serverProc = spawn(
-      process.execPath,
-      ['--expose-internals', cli, '--profile', 'web', '--port', String(PORT)],
-      {
-        env: { ...env, ELECTRON_RUN_AS_NODE: '1' },
-        stdio: ['ignore', 'pipe', 'pipe'],
-        detached: true,
-      }
-    );
-  } else {
-    serverProc = spawnNpxFallback(env);
-  }
+  appendLog(`spawning bundled CLI: ELECTRON_RUN_AS_NODE=1 ${process.execPath} --expose-internals ${cli} --profile web --port ${PORT}`);
+  serverProc = spawnDshServer({
+    electronPath: process.execPath,
+    cliPath: cli,
+    port: PORT,
+    dshHome: DSH_HOME,
+  });
   serverProc.stdout.on('data', (d) => appendLog(d.toString()));
   serverProc.stderr.on('data', (d) => appendLog(d.toString()));
   serverProc.on('exit', (code, sig) => {
@@ -209,6 +125,16 @@ function startServer(cli) {
       if (choice === 0) restart();
       else app.quit();
     }
+  });
+}
+
+function showRuntimeMissing(win, error) {
+  dialog.showMessageBoxSync(win, {
+    type: 'error',
+    title: '安装不完整',
+    message: 'DeepSeek Harness 缺少内置运行组件。',
+    detail: `请从项目发布页重新下载安装包并覆盖安装。\n\n${error.message}`,
+    buttons: ['退出'],
   });
 }
 
@@ -262,23 +188,13 @@ async function boot() {
     return;
   }
 
-  let cli = await findDshCli();
-  if (!cli) {
-    const choice = dialog.showMessageBoxSync(win, {
-      type: 'warning',
-      title: '未找到 dsh 命令',
-      message: '本机没有找到已安装的 dsh CLI。',
-      detail:
-        '查找顺序：$DSH_CLI → 本机 npm 全局安装 / npx 缓存中的 @deepseek-ai/dsh（取最新）。\n' +
-        '也可以选择用 npx 在线启动（首次需要联网下载）。',
-      buttons: ['用 npx 在线启动', '退出'],
-      defaultId: 0,
-      cancelId: 1,
-    });
-    if (choice !== 0) {
-      app.quit();
-      return;
-    }
+  let cli;
+  try {
+    cli = resolveDshCli({ override: process.env.DSH_CLI });
+  } catch (error) {
+    showRuntimeMissing(win, error);
+    app.quit();
+    return;
   }
 
   starting = true;
@@ -308,7 +224,15 @@ async function restart() {
   if (!mainWindow) return;
   starting = true;
   killServer();
-  const cli = await findDshCli();
+  let cli;
+  try {
+    cli = resolveDshCli({ override: process.env.DSH_CLI });
+  } catch (error) {
+    starting = false;
+    showRuntimeMissing(mainWindow, error);
+    app.quit();
+    return;
+  }
   startServer(cli);
   const ok = await waitForServer();
   starting = false;

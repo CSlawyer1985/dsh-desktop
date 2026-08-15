@@ -1,12 +1,13 @@
 # DeepSeek Harness Desktop
 
-把 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh web`）封装成跨平台桌面应用：双击图标即可打开，无需每次手动启动服务、再开浏览器输网址。
+把 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh web`）及其所需运行组件封装成跨平台桌面应用：安装后双击图标即可打开，无需安装 Node.js、npm 或 dsh CLI，也不用打开终端。
 
 支持 **macOS / Windows / Linux**，官方 logo 图标（白色星标衬黑底）。
 
 ## 特性
 
 - **一键启动**：自动拉起 `dsh web` 服务（默认端口 3080），就绪后加载 UI
+- **运行组件内置**：安装包内置官方 `@deepseek-ai/dsh@0.1.0-rc.6`，首次启动不会临时联网下载 CLI
 - **智能复用**：如果服务已经在运行（比如你在终端里跑过 `dsh web`），直接复用，不重复启动
 - **生命周期管理**：退出应用时自动关闭它自己拉起的服务进程；复用已有服务时不会误关别人的
 - **独立窗口**：无地址栏、无标签页，固定到 Dock / 任务栏后和原生 App 体验一致
@@ -24,9 +25,7 @@
 | Windows | `DeepSeek-Harness-Setup-*.exe`（安装器）或 `DeepSeek-Harness-Portable-*.exe`（免安装） |
 | Linux | `DeepSeek-Harness-*.AppImage` |
 
-> **前置条件**：桌面端是 DeepSeek Harness 的"壳"，需要本机装有 `dsh` CLI。
-> 只要你在终端跑过一次 `npx @deepseek-ai/dsh web`（或在终端全局安装过 `dsh`），桌面端就能自动发现并复用；
-> 找不到时也会提示你用 npx 在线启动（需要联网）。
+> **无需额外准备**：安装包已经内置所需运行组件。下载安装后可直接启动，不需要另外安装 Node.js、npm、npx 或 dsh CLI。
 
 > **未签名说明**：未配置签名密钥的构建产物没有代码签名，首次打开时系统可能拦截：
 > - macOS：右键点击 App →「打开」（Gatekeeper 提示仅首次出现）；或终端执行 `xattr -dr com.apple.quarantine <路径>`
@@ -37,14 +36,9 @@
 ## 工作原理
 
 1. 启动时探测 `http://127.0.0.1:3080` 是否已有 DSH 服务（按首页的 `__DSH_BOOT__` 标记判断）
-2. 没有则在本机查找 `dsh` CLI（查找顺序：`$DSH_CLI` → npm 全局安装 → npx 缓存，取最新），找不到则询问是否用 `npx` 在线启动
-3. 用 Electron 自带的 Node 运行时（`ELECTRON_RUN_AS_NODE` + `--expose-internals`）启动 `dsh --profile web --port 3080`，不依赖用户 shell 的 PATH
+2. 没有则从应用安装目录加载随安装包发布的 `@deepseek-ai/dsh`
+3. 用应用自带的运行时启动 `dsh --profile web --port 3080`，不依赖用户系统中的 Node.js、npm、npx 或 shell PATH
 4. 轮询等待服务就绪（最长 120 秒），然后加载 UI
-
-各平台 CLI 查找位置：
-
-- macOS / Linux：`~/.npm-global`、`/usr/local/lib/node_modules`、`/usr/lib/node_modules`、`~/.npm/_npx/*`
-- Windows：`%APPDATA%\npm`、`%LOCALAPPDATA%\npm-cache\_npx\*`
 
 ## 作者
 
@@ -56,7 +50,7 @@
 git clone <你的仓库地址>
 cd dsh-desktop
 npm ci
-bash scripts/build.sh mac    # 或 win / linux / all
+bash scripts/build.sh mac    # 当前系统使用 mac / win / linux
 ```
 
 产物输出到 `dist/`：
@@ -65,14 +59,14 @@ bash scripts/build.sh mac    # 或 win / linux / all
 - Windows：`Setup .exe`（NSIS 安装器）+ `Portable .exe`
 - Linux：`.AppImage`
 
-GitHub Actions 已配置好三平台构建（`.github/workflows/build.yml`），打 `v*` tag 即可自动产出全部安装包。
+因为 DSH 包含按系统和芯片区分的原生组件，本地构建只生成当前系统和芯片对应的安装包。GitHub Actions 已配置 macOS arm64/x64、Windows arm64/x64 和 Linux x64 原生构建；打 `v*` tag 即可产出全部安装包。
 
 ## 环境变量
 
 | 变量 | 说明 |
 | --- | --- |
 | `DSH_DESKTOP_PORT` | 覆盖端口（默认 `3080`） |
-| `DSH_CLI` | 指定 dsh CLI 入口（`lib/bin.js` 的绝对路径） |
+| `DSH_CLI` | 开发调试时覆盖内置 dsh CLI 入口（`lib/bin.js` 的绝对路径） |
 | `DSH_HOME` | 数据目录（默认 `~/.dsh`） |
 
 调试运行（开发模式）：`DSH_DESKTOP_PORT=3081 npm start`
@@ -84,7 +78,7 @@ GitHub Actions 已配置好三平台构建（`.github/workflows/build.yml`），
   - Windows：`%APPDATA%\DeepSeek Harness\`
   - Linux：`~/.config/DeepSeek Harness/`
 - 端口 3080 被其他程序占用：服务启动会失败，弹窗里会显示错误日志；换端口用 `DSH_DESKTOP_PORT`，或先停掉占用进程
-- 找不到 dsh：确保曾用 `npx @deepseek-ai/dsh web` 跑过，或设置 `DSH_CLI`
+- 提示“安装不完整”：从项目 Releases 重新下载安装包并覆盖安装；开发调试时也可用 `DSH_CLI` 指定入口
 - 服务进程退出后残留：下次启动会检测到并直接复用
 
 ## 介绍页（site/）
@@ -92,8 +86,9 @@ GitHub Actions 已配置好三平台构建（`.github/workflows/build.yml`），
 `site/` 目录是项目的下载介绍页（风格参照 deepseek.com/harness），包含各平台下载入口与作者信息。
 
 - 本地预览：`open site/index.html`
-- 自动部署：推送 `main` 分支后由 `.github/workflows/pages.yml` 发布到 GitHub Pages
-- 下载链接与版本号在 `site/main.js` 顶部的 `CONFIG` 中维护（开源后替换为你的仓库地址）
+- 正式站点：[dsh.chenshi.ai](https://dsh.chenshi.ai)，由 Cloudflare Pages 托管
+- 手动部署：`wrangler pages deploy ./site --project-name dsh-desktop --branch main`
+- 下载链接与版本号在 `site/main.js` 顶部的 `CONFIG` 中维护
 
 ## 图标
 
@@ -107,4 +102,4 @@ GitHub Actions 已配置好三平台构建（`.github/workflows/build.yml`），
 
 - MIT License，可自由使用、修改、分发
 - 本项目与 DeepSeek 官方无关，为非官方社区封装；"DeepSeek" 名称与 logo 为 DeepSeek 的商标，仅用于指代其产品
-- 桌面端**不内置** dsh 运行时：它只负责发现并托管你本机已有的 dsh 安装，避免版本锁定与重复分发
+- 桌面端内置官方 `@deepseek-ai/dsh@0.1.0-rc.6` 及其运行依赖，并随桌面版升级统一更新；本项目仍是非官方社区封装

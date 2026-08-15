@@ -11,11 +11,41 @@ on:
 
 jobs:
   build:
-    name: ${{ matrix.os }}
+    name: ${{ matrix.name }}
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        include:
+          - id: macos-arm64
+            name: macOS arm64
+            os: macos-latest
+            platform: darwin
+            arch: arm64
+            app_dir: dist/mac-arm64/DeepSeek Harness.app
+          - id: macos-x64
+            name: macOS x64
+            os: macos-15-intel
+            platform: darwin
+            arch: x64
+            app_dir: dist/mac/DeepSeek Harness.app
+          - id: windows-arm64
+            name: Windows arm64
+            os: windows-11-arm
+            platform: win32
+            arch: arm64
+            app_dir: dist/win-arm64-unpacked
+          - id: windows-x64
+            name: Windows x64
+            os: windows-latest
+            platform: win32
+            arch: x64
+            app_dir: dist/win-unpacked
+          - id: linux-x64
+            name: Linux x64
+            os: ubuntu-latest
+            platform: linux
+            arch: x64
+            app_dir: dist/linux-unpacked
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -28,19 +58,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Test bundled runtime and website
+        run: npm test
+
       - name: Build mac icon (icns from committed png)
-        if: runner.os == 'macOS'
+        if: matrix.platform == 'darwin'
         run: bash scripts/make-icns.sh
 
       # macOS：图标 icns + 签名/公证（未配置密钥时自动降级为不签名构建）
       - name: Build mac installer (dmg + zip)
-        if: runner.os == 'macOS'
+        if: matrix.platform == 'darwin'
         run: |
           if [ -n "$CSC_LINK" ]; then
-            npx electron-builder --mac --x64 --arm64 -c.mac.notarize=true
+            npx electron-builder --mac --${{ matrix.arch }} -c.mac.notarize=true
           else
             unset CSC_LINK CSC_KEY_PASSWORD APPLE_ID APPLE_APP_SPECIFIC_PASSWORD APPLE_TEAM_ID
-            npx electron-builder --mac --x64 --arm64
+            npx electron-builder --mac --${{ matrix.arch }}
           fi
         env:
           GH_TOKEN: ${{ github.token }}
@@ -53,14 +86,14 @@ jobs:
 
       # Windows：Authenticode 签名（未配置密钥时自动降级）
       - name: Build windows installer (nsis + portable)
-        if: runner.os == 'Windows'
+        if: matrix.platform == 'win32'
         shell: bash
         run: |
           if [ -n "$CSC_LINK" ]; then
-            npx electron-builder --win --x64 --arm64
+            npx electron-builder --win --${{ matrix.arch }}
           else
             unset CSC_LINK CSC_KEY_PASSWORD
-            npx electron-builder --win --x64 --arm64
+            npx electron-builder --win --${{ matrix.arch }}
           fi
         env:
           GH_TOKEN: ${{ github.token }}
@@ -68,15 +101,23 @@ jobs:
           CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
 
       - name: Build linux installer (AppImage)
-        if: runner.os == 'Linux'
-        run: npx electron-builder --linux
+        if: matrix.platform == 'linux'
+        run: npx electron-builder --linux --${{ matrix.arch }}
         env:
           GH_TOKEN: ${{ github.token }}
+
+      - name: Verify bundled runtime in packaged app
+        shell: bash
+        run: >-
+          node scripts/verify-packaged-runtime.js
+          "${{ matrix.app_dir }}"
+          --platform "${{ matrix.platform }}"
+          --arch "${{ matrix.arch }}"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: installers-${{ matrix.os }}
+          name: installers-${{ matrix.id }}
           path: |
             dist/*.dmg
             dist/*.zip

@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'self'" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DeepSeek Harness Desktop — 双击即用的 Harness 桌面客户端</title>
-  <meta name="description" content="DeepSeek Harness 桌面客户端：自动拉起 dsh web 服务，独立窗口加载 UI，退出自动清理。跨平台，完整复用本地配置，官方 logo 图标。" />
+  <meta name="description" content="DeepSeek Harness 桌面客户端：内置所需运行组件，安装后直接启动 dsh web 服务。跨平台，完整复用本地配置。" />
   <meta property="og:title" content="DeepSeek Harness Desktop" />
   <meta property="og:description" content="双击即用的 DeepSeek Harness 桌面客户端，支持 macOS / Windows / Linux。" />
   <meta property="og:image" content="assets/icon.png" />
@@ -115,7 +115,7 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg>
             </div>
             <h3>自动拉起服务</h3>
-            <p>启动时探测本地端口：已有 <span class="mono">dsh web</span> 在跑就直接复用；没有则用内置 Node 运行时自动拉起，就绪后加载 UI，无需任何命令。</p>
+            <p>启动时探测本地端口：已有 <span class="mono">dsh web</span> 在跑就直接复用；没有则用安装包内置的运行组件自动拉起，就绪后加载 UI，无需任何命令。</p>
           </article>
           <article class="feature-card reveal" data-delay="2">
             <div class="feature-icon">
@@ -151,13 +151,13 @@
           </div>
           <div class="step-card reveal" data-delay="2">
             <div class="step-num"></div>
-            <h3>发现 CLI</h3>
-            <p>查找本机 npm 全局安装或 npx 缓存中的 <span class="mono">@deepseek-ai/dsh</span>，找不到时可用 npx 在线启动。</p>
+            <h3>启动内置服务</h3>
+            <p>直接加载安装包内置的 <span class="mono">@deepseek-ai/dsh</span>，不依赖系统 Node.js，也不会在首次启动时联网下载运行组件。</p>
           </div>
           <div class="step-card reveal" data-delay="3">
             <div class="step-num"></div>
             <h3>拉起并等待就绪</h3>
-            <p>用 Electron 内置 Node 运行时启动 <span class="mono">dsh --profile web</span>，轮询直到服务就绪（最长 120 秒）。</p>
+            <p>用应用自带运行时启动 <span class="mono">dsh --profile web</span>，轮询直到服务就绪（最长 120 秒）。</p>
           </div>
           <div class="step-card reveal" data-delay="3">
             <div class="step-num"></div>
@@ -177,7 +177,7 @@
               <p class="preview-label" style="color:var(--text-desc);font-size:15px;margin-bottom:10px">选择你的平台</p>
               <h2 class="section-title" style="font-size:clamp(26px,3.6vw,36px)">下载客户端</h2>
             </div>
-            <span class="version-badge" id="versionBadge">v0.2.0</span>
+            <span class="version-badge" id="versionBadge">v0.3.0</span>
           </div>
 
           <div class="tabs" role="tablist" aria-label="平台选择">
@@ -193,7 +193,7 @@
                 <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.54c-.03-2.65 2.16-3.92 2.26-3.98-1.23-1.8-3.15-2.05-3.83-2.08-1.63-.17-3.19.96-4.02.96-.82 0-2.1-.94-3.45-.91-1.78.03-3.42 1.03-4.33 2.63-1.85 3.2-.47 7.94 1.33 10.54.88 1.27 1.93 2.7 3.3 2.65 1.33-.05 1.83-.86 3.44-.86 1.6 0 2.05.86 3.45.83 1.43-.02 2.34-1.3 3.21-2.58 1.01-1.48 1.43-2.91 1.45-2.98-.03-.02-2.78-1.07-2.81-4.22zM14.22 4.7c.73-.89 1.23-2.12 1.09-3.35-1.06.04-2.34.7-3.1 1.59-.68.79-1.28 2.06-1.12 3.27 1.18.09 2.39-.6 3.13-1.51z"/></svg></div>
                 <div class="artifact-meta">
                   <div class="artifact-name">Apple Silicon <span class="artifact-tag">arm64</span></div>
-                  <div class="artifact-desc">M 系列芯片 · DMG 安装镜像 · 约 114 MB</div>
+                  <div class="artifact-desc">M 系列芯片 · DMG 安装镜像 · 内置完整运行组件</div>
                 </div>
                 <a class="artifact-download" data-download="mac-arm64.dmg" href="#download">
                   <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
@@ -204,7 +204,7 @@
                 <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.54c-.03-2.65 2.16-3.92 2.26-3.98-1.23-1.8-3.15-2.05-3.83-2.08-1.63-.17-3.19.96-4.02.96-.82 0-2.1-.94-3.45-.91-1.78.03-3.42 1.03-4.33 2.63-1.85 3.2-.47 7.94 1.33 10.54.88 1.27 1.93 2.7 3.3 2.65 1.33-.05 1.83-.86 3.44-.86 1.6 0 2.05.86 3.45.83 1.43-.02 2.34-1.3 3.21-2.58 1.01-1.48 1.43-2.91 1.45-2.98-.03-.02-2.78-1.07-2.81-4.22zM14.22 4.7c.73-.89 1.23-2.12 1.09-3.35-1.06.04-2.34.7-3.1 1.59-.68.79-1.28 2.06-1.12 3.27 1.18.09 2.39-.6 3.13-1.51z"/></svg></div>
                 <div class="artifact-meta">
                   <div class="artifact-name">Intel <span class="artifact-tag">x64</span></div>
-                  <div class="artifact-desc">Intel Mac · DMG 安装镜像 · 约 116 MB</div>
+                  <div class="artifact-desc">Intel Mac · DMG 安装镜像 · 内置完整运行组件</div>
                 </div>
                 <a class="artifact-download" data-download="mac-x64.dmg" href="#download">
                   <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
@@ -215,7 +215,7 @@
                 <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8"/><path d="M12 3v11"/><path d="m8 10 4 4 4-4"/></svg></div>
                 <div class="artifact-meta">
                   <div class="artifact-name">ZIP 包 <span class="artifact-tag">备用</span></div>
-                  <div class="artifact-desc">免挂载直接解压运行 · arm64 约 114 MB</div>
+                  <div class="artifact-desc">免挂载直接解压运行 · Apple Silicon</div>
                 </div>
                 <a class="artifact-download" data-download="mac-arm64.zip" href="#download">
                   <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
@@ -223,6 +223,39 @@
                 </a>
               </div>
             </div>
+
+            <details class="install-help">
+              <summary>
+                <span class="install-help-heading">
+                  <svg class="install-help-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+                  <span>
+                    <strong>下载后打不开？</strong>
+                    <small>查看 macOS 首次运行方法</small>
+                  </span>
+                </span>
+                <svg class="install-help-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="install-help-body">
+                <p class="install-help-lead">当前 macOS 安装包尚未取得 Apple Developer 签名。Gatekeeper 可能将它显示为“已损坏”，这类提示通常是系统无法验证发布者，并不等同于文件在下载时损坏。</p>
+                <ol class="install-steps">
+                  <li><span>1</span><p>打开下载的 DMG，将 <strong>DeepSeek Harness</strong> 拖入“应用程序”。如果下载的是 ZIP，解压后也请把 App 移入“应用程序”。</p></li>
+                  <li><span>2</span><p>尝试打开一次。如果系统拦截，进入“系统设置 → 隐私与安全性”，向下找到相关提示并点击“仍要打开”。</p></li>
+                  <li><span>3</span><p>如果仍显示“已损坏”，打开“终端”，复制并执行下面这条命令：</p></li>
+                </ol>
+                <div class="install-command">
+                  <code id="macQuarantineCommand">xattr -dr com.apple.quarantine &quot;/Applications/DeepSeek Harness.app&quot;</code>
+                  <button class="install-copy" type="button" data-copy-target="macQuarantineCommand" aria-label="复制 macOS 打开命令">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>复制命令</span>
+                  </button>
+                </div>
+                <p class="install-help-finish">执行后，再从“应用程序”中打开 DeepSeek Harness。</p>
+                <p class="install-safety">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                  这条命令只移除 DeepSeek Harness 的下载隔离标记，不会关闭 Mac 的整体安全保护。请仅使用本站或项目 GitHub Releases 提供的安装包。
+                </p>
+              </div>
+            </details>
           </div>
 
           <!-- Windows -->
@@ -232,7 +265,7 @@
                 <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.45 9.75 2.24v9.4H0zM11.25 2.06 24 0.5v11.1h-12.75zM0 12.36h9.75v9.4L0 20.55zM11.25 12.36H24V23.5L11.25 21.94z"/></svg></div>
                 <div class="artifact-meta">
                   <div class="artifact-name">安装器 <span class="artifact-tag">x64 推荐</span></div>
-                  <div class="artifact-desc">NSIS 安装向导 · 用户级安装 · 约 95 MB</div>
+                  <div class="artifact-desc">NSIS 安装向导 · 用户级安装 · 内置完整运行组件</div>
                 </div>
                 <a class="artifact-download" data-download="Setup-x64.exe" href="#download">
                   <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
@@ -243,7 +276,7 @@
                 <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.45 9.75 2.24v9.4H0zM11.25 2.06 24 0.5v11.1h-12.75zM0 12.36h9.75v9.4L0 20.55zM11.25 12.36H24V23.5L11.25 21.94z"/></svg></div>
                 <div class="artifact-meta">
                   <div class="artifact-name">便携版 <span class="artifact-tag">x64</span></div>
-                  <div class="artifact-desc">免安装直接运行 · 约 95 MB</div>
+                  <div class="artifact-desc">免安装直接运行 · 内置完整运行组件</div>
                 </div>
                 <a class="artifact-download" data-download="Portable-x64.exe" href="#download">
                   <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
@@ -254,7 +287,7 @@
                 <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.45 9.75 2.24v9.4H0zM11.25 2.06 24 0.5v11.1h-12.75zM0 12.36h9.75v9.4L0 20.55zM11.25 12.36H24V23.5L11.25 21.94z"/></svg></div>
                 <div class="artifact-meta">
                   <div class="artifact-name">安装器 <span class="artifact-tag">arm64</span></div>
-                  <div class="artifact-desc">Windows on ARM · 约 92 MB</div>
+                  <div class="artifact-desc">Windows on ARM · 内置完整运行组件</div>
                 </div>
                 <a class="artifact-download" data-download="Setup-arm64.exe" href="#download">
                   <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
@@ -262,6 +295,31 @@
                 </a>
               </div>
             </div>
+
+            <details class="install-help">
+              <summary>
+                <span class="install-help-heading">
+                  <svg class="install-help-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+                  <span>
+                    <strong>下载后打不开？</strong>
+                    <small>查看 Windows 首次运行方法</small>
+                  </span>
+                </span>
+                <svg class="install-help-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="install-help-body">
+                <p class="install-help-lead">当前 Windows 安装包尚未取得代码签名，因此 SmartScreen 可能显示“Windows 已保护你的电脑”。请按下面的步骤完成首次运行。</p>
+                <ol class="install-steps">
+                  <li><span>1</span><p>双击下载的安装器或便携版。如果出现蓝色安全提示，点击提示中的“更多信息”。</p></li>
+                  <li><span>2</span><p>确认应用名称为 <strong>DeepSeek Harness</strong>，并确认文件来自本站或项目 GitHub Releases。</p></li>
+                  <li><span>3</span><p>点击“仍要运行”，随后按正常安装步骤继续。这个确认通常只在首次运行时出现。</p></li>
+                </ol>
+                <p class="install-safety">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                  不需要关闭 Windows Defender 或 SmartScreen，只需对本次下载的 DeepSeek Harness 单独确认运行。
+                </p>
+              </div>
+            </details>
           </div>
 
           <!-- Linux -->
@@ -289,15 +347,39 @@
                 </a>
               </div>
             </div>
+
+            <details class="install-help">
+              <summary>
+                <span class="install-help-heading">
+                  <svg class="install-help-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+                  <span>
+                    <strong>下载后打不开？</strong>
+                    <small>查看 Linux 首次运行方法</small>
+                  </span>
+                </span>
+                <svg class="install-help-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="install-help-body">
+                <p class="install-help-lead">AppImage 下载后需要先取得执行权限。这是 Linux 对下载文件的常规保护，并不需要安装到系统目录。</p>
+                <ol class="install-steps">
+                  <li><span>1</span><p>打开终端，进入 AppImage 所在目录。</p></li>
+                  <li><span>2</span><p>依次执行下面两条命令，赋予执行权限并启动应用：</p></li>
+                </ol>
+                <div class="install-command install-command-static">
+                  <code>chmod +x DeepSeek-Harness-*.AppImage
+./DeepSeek-Harness-*.AppImage</code>
+                </div>
+                <p class="install-safety">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                  只为从本站或项目 GitHub Releases 下载的 AppImage 增加执行权限。
+                </p>
+              </div>
+            </details>
           </div>
 
           <div class="download-notes">
             <p>
-              · 安装包目前<strong style="color:#c7d0de">未做代码签名</strong>：macOS 首次打开请右键 →「打开」；Windows 请点「更多信息」→「仍要运行」。签名方案见
-              <a href="https://github.com/CSlawyer1985/dsh-desktop/blob/main/docs/SIGNING.md" target="_blank" rel="noopener">代码签名指南</a>。
-            </p>
-            <p>
-              · 桌面端需要本机已有 dsh CLI（终端跑过一次 <span class="mono">npx @deepseek-ai/dsh web</span> 即可自动发现），或选择 npx 在线启动。
+              · 安装包已内置所需运行组件，安装后无需 Node.js、npm、npx 或终端准备即可启动。
               · 全部历史版本见 <a href="https://github.com/CSlawyer1985/dsh-desktop/releases" target="_blank" rel="noopener">GitHub Releases</a>。
             </p>
           </div>
@@ -311,7 +393,7 @@
         <div class="section-head reveal">
           <p class="preview-label">或者</p>
           <h2 class="section-title">从源码构建</h2>
-          <p class="section-sub">项目完全开源（MIT），一条命令构建安装包，产出当前平台的 dmg / exe / AppImage。</p>
+          <p class="section-sub">项目完全开源（MIT），一条命令构建当前系统与芯片对应的 dmg / exe / AppImage；全部平台产物由 GitHub Actions 生成。</p>
         </div>
         <div class="code-block reveal" data-delay="1">
           <div class="code-head">
@@ -323,7 +405,7 @@
           </div>
           <div class="code-body"><span class="cm"># 克隆仓库</span>
 <span class="c1">git clone</span> https://github.com/CSlawyer1985/dsh-desktop
-<span class="cm"># 安装依赖并构建（mac / win / linux / all）</span>
+<span class="cm"># 安装依赖并构建当前系统/芯片（mac / win / linux）</span>
 <span class="c1">cd</span> dsh-desktop && <span class="c1">npm ci</span>
 <span class="c1">bash</span> <span class="c2">scripts/build.sh</span> <span class="c1">mac</span></div>
         </div>
@@ -366,7 +448,6 @@
             <li><a href="https://github.com/CSlawyer1985/dsh-desktop" target="_blank" rel="noopener">GitHub 仓库<span class="ext">↗</span></a></li>
             <li><a href="https://github.com/CSlawyer1985/dsh-desktop/releases" target="_blank" rel="noopener">Releases 下载<span class="ext">↗</span></a></li>
             <li><a href="https://github.com/CSlawyer1985/dsh-desktop/blob/main/README.md" target="_blank" rel="noopener">README 文档<span class="ext">↗</span></a></li>
-            <li><a href="https://github.com/CSlawyer1985/dsh-desktop/blob/main/docs/SIGNING.md" target="_blank" rel="noopener">代码签名指南<span class="ext">↗</span></a></li>
             <li><a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noopener">DeepSeek Harness（上游）<span class="ext">↗</span></a></li>
           </ul>
         </div>

@@ -1,14 +1,20 @@
 {
   "name": "dsh-desktop",
   "productName": "DeepSeek Harness",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "DeepSeek Harness 桌面端：自动拉起 dsh web 服务并在独立窗口加载 UI（macOS / Windows / Linux）",
   "main": "main.js",
-  "author": { "name": "CSlawyer", "url": "https://chenshi.ai" },
+  "author": {
+    "name": "CSlawyer",
+    "url": "https://chenshi.ai"
+  },
   "homepage": "https://chenshi.ai",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
+    "test": "node --test tests/*.test.js",
+    "test:runtime": "node --test tests/dsh-runtime.test.js tests/packaged-runtime.test.js",
+    "test:site": "node --test tests/site-install-help.test.js",
     "icon": "node scripts/make-icon-render.js && npx electron scripts/render-icon.js && bash scripts/make-icns.sh",
     "dist": "bash scripts/build.sh",
     "dist:mac": "electron-builder --mac",
@@ -24,12 +30,16 @@
     },
     "files": [
       "main.js",
+      "lib/dsh-runtime.js",
       "loading.html",
       "about.html",
       "assets/about-logo.svg",
       "package.json"
     ],
     "asar": true,
+    "asarUnpack": [
+      "node_modules/**/*"
+    ],
     "mac": {
       "icon": "build/icon.icns",
       "category": "public.app-category.developer-tools",
@@ -71,5 +81,8 @@
   "devDependencies": {
     "electron": "^43.4.0",
     "electron-builder": "^26.15.3"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh": "0.1.0-rc.6"
   }
 }
