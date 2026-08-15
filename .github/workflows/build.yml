@@ -35,9 +35,14 @@ jobs:
         if: runner.os == 'macOS'
         run: bash scripts/make-icns.sh
 
-      - name: Build mac installer (signed & notarized)
-        if: runner.os == 'macOS' && secrets.MAC_CSC_LINK != ''
-        run: npx electron-builder --mac --x64 --arm64 -c.mac.notarize=true
+      - name: Build mac installer (dmg + zip)
+        if: runner.os == 'macOS'
+        run: |
+          if [ -n "$CSC_LINK" ]; then
+            npx electron-builder --mac --x64 --arm64 -c.mac.notarize=true
+          else
+            npx electron-builder --mac --x64 --arm64
+          fi
         env:
           GH_TOKEN: ${{ github.token }}
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
@@ -47,27 +52,19 @@ jobs:
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
-      - name: Build mac installer (unsigned)
-        if: runner.os == 'macOS' && secrets.MAC_CSC_LINK == ''
-        run: npx electron-builder --mac --x64 --arm64
-        env:
-          GH_TOKEN: ${{ github.token }}
-          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
-
       # Windows：Authenticode 签名（未配置密钥时自动降级）
-      - name: Build windows installer (signed)
-        if: runner.os == 'Windows' && secrets.WIN_CSC_LINK != ''
-        run: npx electron-builder --win --x64 --arm64
+      - name: Build windows installer (nsis + portable)
+        if: runner.os == 'Windows'
+        run: |
+          if [ -n "$CSC_LINK" ]; then
+            npx electron-builder --win --x64 --arm64
+          else
+            npx electron-builder --win --x64 --arm64
+          fi
         env:
           GH_TOKEN: ${{ github.token }}
           CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
-
-      - name: Build windows installer (unsigned)
-        if: runner.os == 'Windows' && secrets.WIN_CSC_LINK == ''
-        run: npx electron-builder --win --x64 --arm64
-        env:
-          GH_TOKEN: ${{ github.token }}
 
       - name: Build linux installer (AppImage)
         if: runner.os == 'Linux'
