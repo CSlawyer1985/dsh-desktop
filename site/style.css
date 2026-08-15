@@ -763,15 +763,6 @@ img { max-width: 100%; display: block; }
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 980px) {
-  .hero-inner { grid-template-columns: 1fr; gap: 56px; padding-top: 110px; }
-  .window { max-width: 560px; }
-  .feature-grid { grid-template-columns: 1fr; }
-  .how-grid { grid-template-columns: repeat(2, 1fr); }
-  .footer-grid { grid-template-columns: 1fr; gap: 36px; }
-  .download-wrap { padding: 40px 26px; }
-}
-
-@media (max-width: 640px) {
   .nav-links { display: none; }
   .nav-links.open {
     display: flex; flex-direction: column; align-items: stretch; gap: 2px;
@@ -783,6 +774,15 @@ img { max-width: 100%; display: block; }
   }
   .nav-link { padding: 12px 14px; }
   .nav-toggle { display: block; }
+  .hero-inner { grid-template-columns: 1fr; gap: 56px; padding-top: 110px; }
+  .window { max-width: 560px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .how-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+  .download-wrap { padding: 40px 26px; }
+}
+
+@media (max-width: 640px) {
   .how-grid { grid-template-columns: 1fr; }
   .tabs { width: 100%; }
   .tab { flex: 1; justify-content: center; padding: 10px 8px; }

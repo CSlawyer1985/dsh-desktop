@@ -147,13 +147,13 @@ async function copyText(text) {
 }
 
 function showCopiedState(button) {
-  const defaultMarkup = button.innerHTML;
+  if (!button.copyDefaultMarkup) button.copyDefaultMarkup = button.innerHTML;
   clearTimeout(button.copyResetTimer);
   button.classList.add('copied');
   button.textContent = '已复制';
   button.copyResetTimer = setTimeout(() => {
     button.classList.remove('copied');
-    button.innerHTML = defaultMarkup;
+    button.innerHTML = button.copyDefaultMarkup;
   }, 2000);
 }
 
