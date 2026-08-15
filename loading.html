@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<style>
+  html, body { height: 100%; margin: 0; background: #0b0e14; color: #c9d4e6;
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; }
+  .wrap { height: 100%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 20px; }
+  .spinner { width: 44px; height: 44px; border-radius: 50%;
+    border: 4px solid rgba(77, 107, 254, 0.2);
+    border-top-color: #4d6bfe; animation: spin 0.9s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .title { font-size: 17px; font-weight: 600; }
+  .hint { font-size: 13px; color: #7c8aa5; }
+  .credit { position: fixed; bottom: 14px; width: 100%; text-align: center;
+    font-size: 11px; color: #55637d; }
+  .credit a { color: #55637d; text-decoration: none; }
+  .credit a:hover { color: #6f8cff; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="spinner"></div>
+    <div class="title">正在启动 DeepSeek Harness…</div>
+    <div class="hint">首次启动需要拉起 dsh web 服务，请稍候</div>
+  </div>
+  <div class="credit">by <a href="https://chenshi.ai" target="_blank">CSlawyer</a> · <a href="https://chenshi.ai" target="_blank">chenshi.ai</a></div>
+</body>
+</html>

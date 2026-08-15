@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'self'" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeepSeek Harness Desktop — 双击即用的 Harness 桌面客户端</title>
+  <meta name="description" content="DeepSeek Harness 桌面客户端：自动拉起 dsh web 服务，独立窗口加载 UI，退出自动清理。跨平台，完整复用本地配置，官方 logo 图标。" />
+  <meta property="og:title" content="DeepSeek Harness Desktop" />
+  <meta property="og:description" content="双击即用的 DeepSeek Harness 桌面客户端，支持 macOS / Windows / Linux。" />
+  <meta property="og:image" content="assets/icon.png" />
+  <link rel="icon" type="image/svg+xml" href="assets/about-logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Host+Grotesk:wght@400;500;600&family=Fragment+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ================= 导航 ================= -->
+  <nav class="nav" id="nav">
+    <div class="container nav-inner">
+      <a class="nav-brand" href="#top">
+        <span class="mark"><img src="assets/about-logo.svg" alt="" /></span>
+        DeepSeek Harness<em>Desktop</em>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a class="nav-link" href="#features">特性</a>
+        <a class="nav-link" href="#how">工作原理</a>
+        <a class="nav-link" href="#download">下载</a>
+        <a class="nav-link" href="#source">源码构建</a>
+        <a class="nav-link" href="https://github.com/CSlawyer1985/dsh-desktop" target="_blank" rel="noopener">GitHub</a>
+        <a class="nav-link primary" href="#download">立即下载</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main id="top">
+
+    <!-- ================= Hero ================= -->
+    <section class="hero">
+      <div class="hero-bg-grid" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-glow left" aria-hidden="true"></div>
+
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <p class="preview-label hero-enter" style="animation-delay:0.05s">DeepSeek Harness 桌面客户端</p>
+          <h1 class="hero-title hero-enter" style="animation-delay:0.12s">一点即开</h1>
+          <p class="desc hero-enter" style="--enter-y:20px;--enter-blur:8px;animation-delay:0.2s">
+            DeepSeek Harness 的跨平台桌面封装：双击图标，自动拉起 <span class="mono" style="color:#8fabff">dsh web</span> 服务，
+            独立窗口加载 UI，退出自动清理。无需再打开终端、输入网址。
+          </p>
+          <p class="desc hero-enter" style="--enter-y:16px;--enter-blur:8px;animation-delay:0.26s">
+            完整复用本机 <span class="mono" style="color:#8fabff">~/.dsh</span> 的 profile、插件与会话数据，
+            与命令行体验完全一致。
+          </p>
+          <div class="hero-cta hero-enter" style="--enter-y:14px;animation-duration:0.7s;animation-delay:0.32s">
+            <a class="btn btn-primary btn-lg" href="#download">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
+              下载客户端
+            </a>
+            <a class="btn btn-secondary btn-lg" href="https://github.com/CSlawyer1985/dsh-desktop" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              查看 GitHub
+            </a>
+          </div>
+          <div class="platform-chips hero-enter" style="--enter-y:12px;animation-duration:0.7s;animation-delay:0.38s">
+            <span class="chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.54c-.03-2.65 2.16-3.92 2.26-3.98-1.23-1.8-3.15-2.05-3.83-2.08-1.63-.17-3.19.96-4.02.96-.82 0-2.1-.94-3.45-.91-1.78.03-3.42 1.03-4.33 2.63-1.85 3.2-.47 7.94 1.33 10.54.88 1.27 1.93 2.7 3.3 2.65 1.33-.05 1.83-.86 3.44-.86 1.6 0 2.05.86 3.45.83 1.43-.02 2.34-1.3 3.21-2.58 1.01-1.48 1.43-2.91 1.45-2.98-.03-.02-2.78-1.07-2.81-4.22zM14.22 4.7c.73-.89 1.23-2.12 1.09-3.35-1.06.04-2.34.7-3.1 1.59-.68.79-1.28 2.06-1.12 3.27 1.18.09 2.39-.6 3.13-1.51z"/></svg>macOS</span>
+            <span class="chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.45 9.75 2.24v9.4H0zM11.25 2.06 24 0.5v11.1h-12.75zM0 12.36h9.75v9.4L0 20.55zM11.25 12.36H24V23.5L11.25 21.94z"/></svg>Windows</span>
+            <span class="chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 7 7 5 7-5"/><path d="M3 7a9 9 0 0 1 18 0v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Linux</span>
+            <span class="chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>MIT 开源</span>
+          </div>
+        </div>
+
+        <!-- 窗口模拟 -->
+        <div class="window hero-enter" style="--enter-y:28px;--enter-blur:12px;animation-delay:0.3s" aria-hidden="false">
+          <div class="window-bar">
+            <span class="window-dot r"></span>
+            <span class="window-dot y"></span>
+            <span class="window-dot g"></span>
+            <span class="window-title">DeepSeek Harness</span>
+          </div>
+          <div class="window-body">
+            <div class="window-brand">
+              <span class="mark"><img src="assets/about-logo.svg" alt="" /></span>
+              <span class="name">DeepSeek Harness</span>
+            </div>
+            <div id="bootLog" class="mono">
+              <div class="boot-line"><span class="dim">$</span> dsh web <span class="dim">--port 3080</span></div>
+            </div>
+            <div class="window-status">
+              <span class="pulse"></span>
+              <span id="bootStatus">正在启动服务…</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 特性 ================= -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="preview-label">三个核心设计</p>
+          <h2 class="section-title">把"启动服务"这件事，<br />从终端里拿掉</h2>
+          <p class="section-sub">桌面端只做一件事：让 DeepSeek Harness 像普通 App 一样，双击即用。</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card reveal" data-delay="1">
+            <div class="feature-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg>
+            </div>
+            <h3>自动拉起服务</h3>
+            <p>启动时探测本地端口：已有 <span class="mono">dsh web</span> 在跑就直接复用；没有则用内置 Node 运行时自动拉起，就绪后加载 UI，无需任何命令。</p>
+          </article>
+          <article class="feature-card reveal" data-delay="2">
+            <div class="feature-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 9h20"/><path d="M6 14h4"/></svg>
+            </div>
+            <h3>独立桌面窗口</h3>
+            <p>无地址栏、无标签页的原生窗口，固定到 Dock 或任务栏后与普通 App 无异；服务意外退出会弹窗提示，一键重启。</p>
+          </article>
+          <article class="feature-card reveal" data-delay="3">
+            <div class="feature-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17 10 11 14 15 20 9"/><path d="M15 9h5v5"/></svg>
+            </div>
+            <h3>完整复用配置</h3>
+            <p>直接使用本机 <span class="mono">~/.dsh</span> 下的 profile、插件与会话数据，与命令行体验完全一致；退出时自动关闭自己拉起的服务，不误伤其他实例。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 工作原理 ================= -->
+    <section class="section" id="how" style="padding-top:30px">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="preview-label">每一次启动都有迹可循</p>
+          <h2 class="section-title">工作原理</h2>
+          <p class="section-sub">状态全程可见：日志写入应用数据目录，服务守护进程意外退出时弹窗提示，任何环节出问题都能快速定位。</p>
+        </div>
+        <div class="how-grid">
+          <div class="step-card reveal" data-delay="1">
+            <div class="step-num"></div>
+            <h3>探测端口</h3>
+            <p>检查 <span class="mono">127.0.0.1:3080</span> 是否已有 DSH 服务（按 <span class="mono">__DSH_BOOT__</span> 标记识别）。</p>
+          </div>
+          <div class="step-card reveal" data-delay="2">
+            <div class="step-num"></div>
+            <h3>发现 CLI</h3>
+            <p>查找本机 npm 全局安装或 npx 缓存中的 <span class="mono">@deepseek-ai/dsh</span>，找不到时可用 npx 在线启动。</p>
+          </div>
+          <div class="step-card reveal" data-delay="3">
+            <div class="step-num"></div>
+            <h3>拉起并等待就绪</h3>
+            <p>用 Electron 内置 Node 运行时启动 <span class="mono">dsh --profile web</span>，轮询直到服务就绪（最长 120 秒）。</p>
+          </div>
+          <div class="step-card reveal" data-delay="3">
+            <div class="step-num"></div>
+            <h3>守护与清理</h3>
+            <p>加载 UI；退出应用时自动关闭自己拉起的服务进程，复用中的外部实例保持不动。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 下载 ================= -->
+    <section class="section" id="download">
+      <div class="container">
+        <div class="download-wrap reveal">
+          <div class="download-head">
+            <div>
+              <p class="preview-label" style="color:var(--text-desc);font-size:15px;margin-bottom:10px">选择你的平台</p>
+              <h2 class="section-title" style="font-size:clamp(26px,3.6vw,36px)">下载客户端</h2>
+            </div>
+            <span class="version-badge" id="versionBadge">v0.2.0</span>
+          </div>
+
+          <div class="tabs" role="tablist" aria-label="平台选择">
+            <button class="tab active" role="tab" aria-selected="true" data-tab="mac">macOS</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="win">Windows</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="linux">Linux</button>
+          </div>
+
+          <!-- macOS -->
+          <div class="tab-panel active" data-panel="mac" role="tabpanel">
+            <div class="artifact-list">
+              <div class="artifact-card">
+                <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.54c-.03-2.65 2.16-3.92 2.26-3.98-1.23-1.8-3.15-2.05-3.83-2.08-1.63-.17-3.19.96-4.02.96-.82 0-2.1-.94-3.45-.91-1.78.03-3.42 1.03-4.33 2.63-1.85 3.2-.47 7.94 1.33 10.54.88 1.27 1.93 2.7 3.3 2.65 1.33-.05 1.83-.86 3.44-.86 1.6 0 2.05.86 3.45.83 1.43-.02 2.34-1.3 3.21-2.58 1.01-1.48 1.43-2.91 1.45-2.98-.03-.02-2.78-1.07-2.81-4.22zM14.22 4.7c.73-.89 1.23-2.12 1.09-3.35-1.06.04-2.34.7-3.1 1.59-.68.79-1.28 2.06-1.12 3.27 1.18.09 2.39-.6 3.13-1.51z"/></svg></div>
+                <div class="artifact-meta">
+                  <div class="artifact-name">Apple Silicon <span class="artifact-tag">arm64</span></div>
+                  <div class="artifact-desc">M 系列芯片 · DMG 安装镜像 · 约 114 MB</div>
+                </div>
+                <a class="artifact-download" data-download="mac-arm64.dmg" href="#download">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
+                  下载
+                </a>
+              </div>
+              <div class="artifact-card">
+                <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.54c-.03-2.65 2.16-3.92 2.26-3.98-1.23-1.8-3.15-2.05-3.83-2.08-1.63-.17-3.19.96-4.02.96-.82 0-2.1-.94-3.45-.91-1.78.03-3.42 1.03-4.33 2.63-1.85 3.2-.47 7.94 1.33 10.54.88 1.27 1.93 2.7 3.3 2.65 1.33-.05 1.83-.86 3.44-.86 1.6 0 2.05.86 3.45.83 1.43-.02 2.34-1.3 3.21-2.58 1.01-1.48 1.43-2.91 1.45-2.98-.03-.02-2.78-1.07-2.81-4.22zM14.22 4.7c.73-.89 1.23-2.12 1.09-3.35-1.06.04-2.34.7-3.1 1.59-.68.79-1.28 2.06-1.12 3.27 1.18.09 2.39-.6 3.13-1.51z"/></svg></div>
+                <div class="artifact-meta">
+                  <div class="artifact-name">Intel <span class="artifact-tag">x64</span></div>
+                  <div class="artifact-desc">Intel Mac · DMG 安装镜像 · 约 116 MB</div>
+                </div>
+                <a class="artifact-download" data-download="mac-x64.dmg" href="#download">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
+                  下载
+                </a>
+              </div>
+              <div class="artifact-card">
+                <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8"/><path d="M12 3v11"/><path d="m8 10 4 4 4-4"/></svg></div>
+                <div class="artifact-meta">
+                  <div class="artifact-name">ZIP 包 <span class="artifact-tag">备用</span></div>
+                  <div class="artifact-desc">免挂载直接解压运行 · arm64 约 114 MB</div>
+                </div>
+                <a class="artifact-download" data-download="mac-arm64.zip" href="#download">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
+                  下载
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Windows -->
+          <div class="tab-panel" data-panel="win" role="tabpanel">
+            <div class="artifact-list">
+              <div class="artifact-card">
+                <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.45 9.75 2.24v9.4H0zM11.25 2.06 24 0.5v11.1h-12.75zM0 12.36h9.75v9.4L0 20.55zM11.25 12.36H24V23.5L11.25 21.94z"/></svg></div>
+                <div class="artifact-meta">
+                  <div class="artifact-name">安装器 <span class="artifact-tag">x64 推荐</span></div>
+                  <div class="artifact-desc">NSIS 安装向导 · 用户级安装 · 约 95 MB</div>
+                </div>
+                <a class="artifact-download" data-download="Setup-x64.exe" href="#download">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
+                  下载
+                </a>
+              </div>
+              <div class="artifact-card">
+                <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.45 9.75 2.24v9.4H0zM11.25 2.06 24 0.5v11.1h-12.75zM0 12.36h9.75v9.4L0 20.55zM11.25 12.36H24V23.5L11.25 21.94z"/></svg></div>
+                <div class="artifact-meta">
+                  <div class="artifact-name">便携版 <span class="artifact-tag">x64</span></div>
+                  <div class="artifact-desc">免安装直接运行 · 约 95 MB</div>
+                </div>
+                <a class="artifact-download" data-download="Portable-x64.exe" href="#download">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
+                  下载
+                </a>
+              </div>
+              <div class="artifact-card">
+                <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.45 9.75 2.24v9.4H0zM11.25 2.06 24 0.5v11.1h-12.75zM0 12.36h9.75v9.4L0 20.55zM11.25 12.36H24V23.5L11.25 21.94z"/></svg></div>
+                <div class="artifact-meta">
+                  <div class="artifact-name">安装器 <span class="artifact-tag">arm64</span></div>
+                  <div class="artifact-desc">Windows on ARM · 约 92 MB</div>
+                </div>
+                <a class="artifact-download" data-download="Setup-arm64.exe" href="#download">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
+                  下载
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Linux -->
+          <div class="tab-panel" data-panel="linux" role="tabpanel">
+            <div class="artifact-list">
+              <div class="artifact-card">
+                <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 7 7 5 7-5"/><path d="M3 7a9 9 0 0 1 18 0v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+                <div class="artifact-meta">
+                  <div class="artifact-name">AppImage <span class="artifact-tag">x64</span></div>
+                  <div class="artifact-desc">chmod +x 后直接运行（CI 自动构建）</div>
+                </div>
+                <a class="artifact-download" data-download="linux.AppImage" href="#download">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L7 8.59V1a1 1 0 0 1 1-1zM1 15a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1z"/></svg>
+                  下载
+                </a>
+              </div>
+              <div class="artifact-card">
+                <div class="artifact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 7 7 5 7-5"/><path d="M3 7a9 9 0 0 1 18 0v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+                <div class="artifact-meta">
+                  <div class="artifact-name">从源码构建</div>
+                  <div class="artifact-desc">Linux 各发行版可用 <span class="mono" style="color:#8fabff">npm ci && bash scripts/build.sh linux</span> 自行构建</div>
+                </div>
+                <a class="artifact-download" href="#source">
+                  查看说明
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="download-notes">
+            <p>
+              · 安装包目前<strong style="color:#c7d0de">未做代码签名</strong>：macOS 首次打开请右键 →「打开」；Windows 请点「更多信息」→「仍要运行」。签名方案见
+              <a href="https://github.com/CSlawyer1985/dsh-desktop/blob/main/docs/SIGNING.md" target="_blank" rel="noopener">代码签名指南</a>。
+            </p>
+            <p>
+              · 桌面端需要本机已有 dsh CLI（终端跑过一次 <span class="mono">npx @deepseek-ai/dsh web</span> 即可自动发现），或选择 npx 在线启动。
+              · 全部历史版本见 <a href="https://github.com/CSlawyer1985/dsh-desktop/releases" target="_blank" rel="noopener">GitHub Releases</a>。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 源码构建 ================= -->
+    <section class="section" id="source" style="padding-top:0">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="preview-label">或者</p>
+          <h2 class="section-title">从源码构建</h2>
+          <p class="section-sub">项目完全开源（MIT），一条命令构建安装包，产出当前平台的 dmg / exe / AppImage。</p>
+        </div>
+        <div class="code-block reveal" data-delay="1">
+          <div class="code-head">
+            <span>bash · dsh-desktop</span>
+            <button class="code-copy" id="copyBtn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              复制
+            </button>
+          </div>
+          <div class="code-body"><span class="cm"># 克隆仓库</span>
+<span class="c1">git clone</span> https://github.com/CSlawyer1985/dsh-desktop
+<span class="cm"># 安装依赖并构建（mac / win / linux / all）</span>
+<span class="c1">cd</span> dsh-desktop && <span class="c1">npm ci</span>
+<span class="c1">bash</span> <span class="c2">scripts/build.sh</span> <span class="c1">mac</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 生态 CTA ================= -->
+    <section class="section" id="community" style="padding-top:0">
+      <div class="container">
+        <div class="cta-band reveal">
+          <h2 class="section-title">开源 · 社区 · 持续迭代</h2>
+          <p>基于 MIT 协议开放源码。欢迎提交 Issue、PR，或到作者主页了解更多 AI 与法律领域的工作。</p>
+          <div class="cta-actions">
+            <a class="btn btn-primary btn-lg" href="https://github.com/CSlawyer1985/dsh-desktop" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              Star on GitHub
+            </a>
+            <a class="btn btn-secondary btn-lg" href="https://chenshi.ai" target="_blank" rel="noopener">访问作者主页</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= 页脚 ================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="about">
+          <div class="mark-row">
+            <span class="mark"><img src="assets/about-logo.svg" alt="" /></span>
+            <span class="name">DeepSeek Harness Desktop</span>
+          </div>
+          <p>DeepSeek Harness 的非官方社区桌面封装。自动拉起服务、独立窗口、退出清理，双击即用，跨平台。</p>
+        </div>
+        <div>
+          <h4>资源</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/CSlawyer1985/dsh-desktop" target="_blank" rel="noopener">GitHub 仓库<span class="ext">↗</span></a></li>
+            <li><a href="https://github.com/CSlawyer1985/dsh-desktop/releases" target="_blank" rel="noopener">Releases 下载<span class="ext">↗</span></a></li>
+            <li><a href="https://github.com/CSlawyer1985/dsh-desktop/blob/main/README.md" target="_blank" rel="noopener">README 文档<span class="ext">↗</span></a></li>
+            <li><a href="https://github.com/CSlawyer1985/dsh-desktop/blob/main/docs/SIGNING.md" target="_blank" rel="noopener">代码签名指南<span class="ext">↗</span></a></li>
+            <li><a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noopener">DeepSeek Harness（上游）<span class="ext">↗</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>作者与作品</h4>
+          <ul class="footer-links">
+            <li><a href="https://chenshi.ai" target="_blank" rel="noopener">陈石 · 法与 AI 主页<span class="ext">↗</span></a></li>
+            <li><a href="https://legalagi.cn" target="_blank" rel="noopener">LegalAI<span class="ext">↗</span></a></li>
+            <li><a href="https://skill.chenshi.ai" target="_blank" rel="noopener">Skill · 技能工坊<span class="ext">↗</span></a></li>
+            <li><a href="https://wiki.legalagi.cn" target="_blank" rel="noopener">Wiki · 知识库<span class="ext">↗</span></a></li>
+            <li><a href="https://learn-agent.legalagi.cn" target="_blank" rel="noopener">Learn · Agent 课程<span class="ext">↗</span></a></li>
+            <li><a href="https://claude.legalagi.cn" target="_blank" rel="noopener">Claude · 法律服务<span class="ext">↗</span></a></li>
+            <li><a href="https://space.bilibili.com/354063681" target="_blank" rel="noopener">Bilibili · 视频<span class="ext">↗</span></a></li>
+            <li><a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub · CSlawyer1985<span class="ext">↗</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 CSlawyer · MIT License · 本项目与 DeepSeek 官方无关</span>
+        <span>「DeepSeek」名称与 logo 为 DeepSeek 商标，仅用于指代其产品</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
