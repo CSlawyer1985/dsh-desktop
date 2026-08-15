@@ -531,6 +531,147 @@ img { max-width: 100%; display: block; }
 }
 .artifact-download:hover { background: var(--brand); border-color: var(--brand); color: #fff; }
 
+.install-help {
+  margin-top: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: rgba(255, 255, 255, 0.025);
+  overflow: hidden;
+  transition: border-color 0.22s var(--ease-out), background 0.22s var(--ease-out);
+}
+.install-help[open] {
+  border-color: rgba(120, 170, 255, 0.34);
+  background: rgba(255, 255, 255, 0.04);
+}
+.install-help summary {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 18px;
+  cursor: pointer;
+  list-style: none;
+  color: #d6ddf2;
+}
+.install-help summary::-webkit-details-marker { display: none; }
+.install-help summary:hover { background: rgba(255, 255, 255, 0.035); }
+.install-help-heading { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.install-help-heading > span { min-width: 0; }
+.install-help-heading strong {
+  display: block;
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.install-help-heading small {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-desc);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.install-help-icon { flex-shrink: 0; color: #8fabff; }
+.install-help-chevron {
+  flex-shrink: 0;
+  color: var(--text-desc);
+  transition: transform 0.22s var(--ease-out), color 0.22s var(--ease-out);
+}
+.install-help[open] .install-help-chevron { transform: rotate(180deg); color: #a9bcff; }
+.install-help-body { padding: 22px; border-top: 1px solid var(--border); }
+.install-help-lead {
+  max-width: 46em;
+  margin-bottom: 20px;
+  color: #c7d0de;
+  font-size: 16px;
+  line-height: 1.75;
+  text-wrap: pretty;
+}
+.install-steps { list-style: none; display: grid; gap: 14px; }
+.install-steps li { display: flex; align-items: flex-start; gap: 12px; }
+.install-steps li > span {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(120, 170, 255, 0.35);
+  border-radius: var(--radius-pill);
+  background: rgba(77, 107, 254, 0.13);
+  color: #a9bcff;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1;
+}
+.install-steps p {
+  color: #b7c1d2;
+  font-size: 16px;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+.install-steps strong { color: #e3e8f2; font-weight: 600; }
+.install-command {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  margin: 18px 0 10px 38px;
+  padding: 14px 14px 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: rgba(0, 0, 0, 0.32);
+}
+.install-command code {
+  min-width: 0;
+  overflow-x: auto;
+  color: #c7d0fe;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre;
+}
+.install-command-static { grid-template-columns: minmax(0, 1fr); }
+.install-copy {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.05);
+  color: #d6ddf2;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+.install-copy:hover { background: rgba(255, 255, 255, 0.11); border-color: rgba(120, 170, 255, 0.45); }
+.install-copy.copied { border-color: rgba(74, 222, 128, 0.45); color: #4ade80; }
+.install-help-finish {
+  margin: 12px 0 0 38px;
+  color: #b7c1d2;
+  font-size: 16px;
+  line-height: 1.7;
+}
+.install-safety {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 13px 14px;
+  border-left: 2px solid rgba(120, 170, 255, 0.55);
+  background: rgba(77, 107, 254, 0.07);
+  color: #9eabc0;
+  font-size: 14px;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+.install-safety svg { flex: 0 0 auto; margin-top: 3px; color: #8fabff; }
+
 .download-notes { margin-top: 26px; color: var(--text-dim); font-size: 13px; line-height: 1.8; }
 .download-notes a { color: #8fabff; border-bottom: 1px dashed rgba(143, 171, 255, 0.5); }
 .download-notes a:hover { color: #a9bcff; }
@@ -645,6 +786,18 @@ img { max-width: 100%; display: block; }
   .tabs { width: 100%; }
   .tab { flex: 1; justify-content: center; padding: 10px 8px; }
   .artifact-list { grid-template-columns: 1fr; }
+  .download-wrap { padding: 34px 18px; }
+  .install-help summary { min-height: 68px; padding: 13px 14px; gap: 12px; }
+  .install-help-body { padding: 20px 14px 16px; }
+  .install-command {
+    grid-template-columns: minmax(0, 1fr);
+    margin-left: 0;
+    padding: 13px;
+  }
+  .install-command code { font-size: 12.5px; }
+  .install-copy { width: 100%; min-height: 42px; }
+  .install-help-finish { margin-left: 0; }
+  .install-safety { font-size: 13.5px; }
   .hero { padding-top: 0; }
   .container { width: min(100% - 32px, 1140px); }
 }

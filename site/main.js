@@ -133,6 +133,39 @@ const bootLines = [
 })();
 
 /* ---------- 复制命令 ---------- */
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+  }
+}
+
+function showCopiedState(button) {
+  const defaultMarkup = button.innerHTML;
+  clearTimeout(button.copyResetTimer);
+  button.classList.add('copied');
+  button.textContent = '已复制';
+  button.copyResetTimer = setTimeout(() => {
+    button.classList.remove('copied');
+    button.innerHTML = defaultMarkup;
+  }, 2000);
+}
+
+document.querySelectorAll('[data-copy-target]').forEach((button) => {
+  button.addEventListener('click', async () => {
+    const target = document.getElementById(button.dataset.copyTarget);
+    if (!target) return;
+    await copyText(target.textContent.trim());
+    showCopiedState(button);
+  });
+});
+
 const copyBtn = document.getElementById('copyBtn');
 if (copyBtn) {
   copyBtn.addEventListener('click', async () => {
@@ -141,22 +174,7 @@ if (copyBtn) {
       'cd dsh-desktop && npm ci',
       'bash scripts/build.sh mac   # win / linux / all',
     ].join('\n');
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      ta.remove();
-    }
-    copyBtn.classList.add('copied');
-    copyBtn.textContent = '已复制';
-    setTimeout(() => {
-      copyBtn.classList.remove('copied');
-      copyBtn.innerHTML =
-        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制';
-    }, 2000);
+    await copyText(text);
+    showCopiedState(copyBtn);
   });
 }
