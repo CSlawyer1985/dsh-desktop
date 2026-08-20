@@ -1,7 +1,7 @@
 {
   "name": "dsh-desktop",
   "productName": "DeepSeek Harness",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "DeepSeek Harness 桌面端：自动拉起 dsh web 服务并在独立窗口加载 UI（macOS / Windows / Linux）",
   "main": "main.js",
   "author": {
@@ -83,6 +83,6 @@
     "electron-builder": "^26.15.3"
   },
   "dependencies": {
-    "@deepseek-ai/dsh": "0.1.0-rc.6"
+    "@deepseek-ai/dsh": "0.1.0-rc.8"
   }
 }
