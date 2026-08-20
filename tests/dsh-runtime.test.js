@@ -66,6 +66,7 @@ test('launches bundled DSH through Electron Node mode without NODE_OPTIONS', () 
     '/app/node_modules/@deepseek-ai/dsh/lib/bin.js',
     '--profile',
     'web',
+    '--no-open',
     '--port',
     '3080',
   ]);
@@ -91,7 +92,7 @@ test('spawns a real offline child with the sanitized launch contract', async () 
   const [code] = await once(child, 'exit');
   assert.equal(code, 0);
   const observed = JSON.parse(output);
-  assert.deepEqual(observed.argv, ['--profile', 'web', '--port', '31888']);
+  assert.deepEqual(observed.argv, ['--profile', 'web', '--no-open', '--port', '31888']);
   assert.equal(observed.dshHome, '/tmp/dsh-test-home');
   assert.equal(observed.electronRunAsNode, '1');
   assert.equal(observed.hasNodeOptions, false);
